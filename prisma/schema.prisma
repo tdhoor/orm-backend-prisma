@@ -1,0 +1,80 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Address {
+  id      Int    @id @default(autoincrement())
+  street  String @db.VarChar(100)
+  city    String @db.VarChar(100)
+  zipCode String @db.VarChar(20)
+  country String @db.VarChar(100)
+
+  customerId Int      @unique
+  customer   Customer @relation(fields: [customerId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+}
+
+model Customer {
+  id        Int    @id @default(autoincrement())
+  email     String @db.VarChar(500)
+  phone     String @db.VarChar(50)
+  password  String @db.VarChar(500)
+  firstName String @db.VarChar(50)
+  lastName  String @db.VarChar(50)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  address Address?
+  orders  Order[]
+}
+
+model Order {
+  id         Int   @id @default(autoincrement())
+  totalPrice Float
+
+  orderItems OrderItem[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  customerId Int?
+  customer   Customer? @relation(fields: [customerId], references: [id], onDelete: SetNull)
+}
+
+model OrderItem {
+  id       Int @id @default(autoincrement())
+  quantity Int
+
+  orderId Int?
+  order   Order? @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  productId Int?
+  product   Product? @relation(fields: [productId], references: [id], onDelete: Cascade)
+}
+
+model ProductCategory {
+  id   Int    @id @default(autoincrement())
+  name String @db.VarChar(100)
+
+  products Product[]
+}
+
+model Product {
+  id          Int    @id @default(autoincrement())
+  name        String @db.VarChar(100)
+  price       Float
+  description String @db.Text
+
+  productCategoryId Int?
+  productCategory   ProductCategory? @relation(fields: [productCategoryId], references: [id], onDelete: SetNull)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  orderItems OrderItem[]
+}
