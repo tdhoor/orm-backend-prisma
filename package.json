@@ -1,0 +1,37 @@
+{
+  "name": "orm-backend-prisma",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "ts-node src/index.ts",
+    "build": "tsc && tsc-alias",
+    "prod": "sleep 2 && prisma migrate deploy && node build/src/index.js",
+    "generate": "prisma generate --schema=./prisma/schema.prisma"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tdhoor/orm-backend-prisma.git"
+  },
+  "author": "Thomas Dorfer",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tdhoor/orm-backend-prisma/issues"
+  },
+  "homepage": "https://github.com/tdhoor/orm-backend-prisma#readme",
+  "devDependencies": {
+    "@types/express": "^4.17.17",
+    "@types/node": "^18.14.6",
+    "prisma": "^4.11.0",
+    "ts-node": "^10.9.1",
+    "tsc-alias": "^1.8.2",
+    "tsconfig-paths": "^4.1.2",
+    "typescript": "^4.9.5"
+  },
+  "dependencies": {
+    "@prisma/client": "^4.11.0",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "reflect-metadata": "^0.1.13"
+  }
+}
