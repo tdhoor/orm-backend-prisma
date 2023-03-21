@@ -13,42 +13,35 @@ async function seedDb(req, res, next) {
 
         let customers = createMock.customers(amount);
         let addresses = createMock.addresses(amount, customers);
+
+        await DB.customer.createMany({ data: customers });
+        customers = null;
+
+        await DB.address.createMany({ data: addresses });
+        addresses = null;
+
         let categories = createMock.productCategories(calcProductCategoryAmount(amount));
         let products = createMock.products(amount, categories);
         let customerIds = Array.from({ length: amount }).map((_, i) => i + 1);
         let { orders, orderItems } = createMock.orders(amount, customerIds, products, { addOrderIdToOrderItem: true, seperateOrderItems: true });
 
-        await DB.customer.createMany({ data: customers });
-        customers = null;
-        customerIds = null;
-        console.log("customers created");
-
-        await DB.address.createMany({ data: addresses });
-        addresses = null;
-        console.log("addresses created");
-
         await DB.productCategory.createMany({ data: categories });
         categories = null;
-        console.log("categories created");
 
         await DB.product.createMany({ data: products });
         products = null;
-        console.log("products created");
 
         await DB.order.createMany({ data: orders });
         orders = null;
-        console.log("orders created");
+        customerIds = null;
 
         await DB.orderItem.createMany({ data: orderItems });
         orderItems = null;
-        console.log("orderItems created");
 
         console.log(performance.now() - p1);
         const count = await countEntities();
 
-        console.log('====================================');
         res.status(200).json({ message: "DB seeded", count });
-        console.log('====================================');
     } catch (e) {
         console.log(e);
         res.status(500).json({ message: "Error seeding DB" });
