@@ -13,6 +13,9 @@ class OrderController implements ICrudController {
                     orderItems: {
                         create: req.body.orderItems
                     }
+                },
+                include: {
+                    orderItems: true
                 }
             });
         }, countEntities)
@@ -69,7 +72,10 @@ class OrderController implements ICrudController {
                 where: {
                     id: +req.body.id
                 },
-                data: req.body
+                data: req.body,
+                include: {
+                    orderItems: true
+                }
             });
         }, countEntities)
             .then((result) => {
@@ -85,6 +91,9 @@ class OrderController implements ICrudController {
             return DB.order.delete({
                 where: {
                     id: +req.params.id
+                },
+                include: {
+                    orderItems: true
                 }
             })
         }, countEntities)
