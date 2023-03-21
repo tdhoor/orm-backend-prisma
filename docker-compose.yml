@@ -10,18 +10,22 @@ services:
     depends_on: 
       - prismadbpostgres
 
-  prismadbpostgres:
-    container_name: prisma.db.postgres
-    image: "postgres:14.5"
+  prismadbmssql:
+    container_name: prisma.db.mssql
+    image: "mcr.microsoft.com/mssql/server:2019-latest"
+    command: /bin/bash ./entrypoint.sh
     restart: always
     ports:
-      - "5432:5432"
+      - "1433:1433"
     environment:
-      POSTGRES_USER: "postgres"
-      POSTGRES_PASSWORD: "postgres"
-      POSTGRES_DB: "testdb"
+      SA_PASSWORD: "a1?%fkARF!24x"
+      MSSQL_PID: Express
+      ACCEPT_EULA: "Y"
     volumes:
-      - prisma-db-postgres:/var/lib/prisma/postgres
-      - ./libs/core/src/db/postgres/testdb.sql:/docker-entrypoint-initdb.d/setup-postgres.sql
+      - prisma-db-mssql:/var/lib/prisma/mssql
+      - ./libs/core/src/db/mssql/docker-entrypoint.sh:/entrypoint.sh
+      - ./libs/core/src/db/mssql/docker-db-init.sh:/db-init.sh
+      - ./libs/core/src/db/mssql/testdb.sql:/db-init.sql
+
 volumes:
-  prisma-db-postgres:
+  prisma-db-mssql:

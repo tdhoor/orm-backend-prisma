@@ -2,10 +2,10 @@ import { Prisma } from "@prisma/client";
 import { DB } from "../db";
 
 export async function deleteAllEntities() {
-    const tables = Prisma.ModelName;
-    const tableNames = Object.keys(tables).join(`","`);
-    const query = `TRUNCATE "${tableNames}" RESTART IDENTITY CASCADE;`
-    console.log("delete all " + query);
-    await DB.$executeRawUnsafe(query)
+    const tables = Object.values(Prisma.ModelName);
+    for (const tableName of tables) {
+        await DB.$executeRawUnsafe(`DELETE from [${tableName}];`)
+        await DB.$executeRawUnsafe(`DBCC CHECKIDENT ([${tableName}], RESEED, 0);`);
+    }
     console.log("delete all done");
 }
