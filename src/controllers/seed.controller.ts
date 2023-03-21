@@ -1,6 +1,7 @@
 import { createMock } from "@core/functions/create-entity-mock.function";
 import { DB } from "../db";
 import { deleteAllEntities } from "../functions/delete-all-entities.function";
+import { countEntities } from "src/functions/count-entities.functions";
 
 async function seedDb(req, res, next) {
     try {
@@ -13,7 +14,8 @@ async function seedDb(req, res, next) {
         let addresses = createMock.addresses(amount);
         let categories = createMock.productCategories((amount / 1000) < 100 ? 100 : (amount / 1000));
         let products = createMock.products(amount, categories);
-        let { orders, orderItems } = createMock.orders(amount, 0, products);
+        let { orders, orderItems } = createMock.orders(amount, 0, products, false);
+
 
         await DB.customer.createMany({ data: customers });
         console.log("customers created");
@@ -34,8 +36,9 @@ async function seedDb(req, res, next) {
         console.log("orderItems created");
 
         console.log(performance.now() - p1);
+        const count = await countEntities();
         console.log('====================================');
-        res.status(200).json({ message: "DB seeded" });
+        res.status(200).json({ message: "DB seeded", count });
         console.log('====================================');
     } catch (e) {
         console.log(e);

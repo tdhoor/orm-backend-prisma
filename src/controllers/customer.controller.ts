@@ -3,7 +3,6 @@ import { ICustomerController } from "@core/models/controllers/customer-controlle
 import { execTest } from "@core/functions/exec-test.function";
 import { DB } from "../db"
 import { countEntities } from "src/functions/count-entities.functions";
-import { Customer, Prisma } from "@prisma/client";
 
 class CustomerController implements ICustomerController {
     createMany(req: Request, res: Response, next: NextFunction) {
@@ -28,9 +27,13 @@ class CustomerController implements ICustomerController {
                         id: +req.params.id
                     }
                 },
+                include: {
+                    orderItems: true
+                },
                 orderBy: {
                     createdAt: "desc"
-                }
+                },
+                take: 100
             });
         }, countEntities)
             .then((result) => {
@@ -53,9 +56,13 @@ class CustomerController implements ICustomerController {
                         }
                     }
                 },
+                include: {
+                    productCategory: true
+                },
                 orderBy: {
                     name: "asc"
-                }
+                },
+                take: 100
             });
         }, countEntities)
             .then((result) => {
@@ -68,20 +75,20 @@ class CustomerController implements ICustomerController {
 
     createOne(req: Request, res: Response, next: NextFunction) {
         execTest(() => {
-            let data: Prisma.CustomerCreateInput = req.body;
-
-            if (req.body.address) {
-                data.address = {
-                    create: req.body.address
+            return DB.customer.create({
+                data: {
+                    ...req.body,
+                    address: {
+                        create: req.body.address
+                    }
                 }
-            }
-            return DB.customer.create({ data });
+            });
         }, countEntities)
             .then((result) => {
                 res.status(200).json(result);
             })
             .catch((error) => {
-                res.status(500).send(error);
+                res.status(500).json({ error, body: req.body });
             })
     }
 
@@ -107,9 +114,6 @@ class CustomerController implements ICustomerController {
     getAll(req: Request, res: Response, next: NextFunction) {
         execTest(() => {
             return DB.customer.findMany({
-                include: {
-                    address: true
-                },
                 take: 100
             });
         }, countEntities)
@@ -123,12 +127,13 @@ class CustomerController implements ICustomerController {
 
     updateOne(req: Request, res: Response, next: NextFunction) {
         execTest(() => {
+            console.log(req.body);
             return DB.customer.update({
                 where: {
                     id: req.body.id
                 },
-                data: req.body,
-            })
+                data: req.body
+            });
         }, countEntities)
             .then((result) => {
                 res.status(200).json(result);
@@ -143,9 +148,6 @@ class CustomerController implements ICustomerController {
             return DB.customer.delete({
                 where: {
                     id: +req.params.id
-                },
-                include: {
-                    address: true
                 }
             });
         }, countEntities)

@@ -9,6 +9,5 @@ RUN npx prisma generate
 
 COPY . .
 RUN npm run build
-COPY . .
 
 CMD npm run prod

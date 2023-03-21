@@ -22,7 +22,9 @@ class OrderItemController implements ICrudController {
     getOneById(req: Request, res: Response, next: NextFunction) {
         execTest(() => {
             return DB.orderItem.findUnique({
-                where: { id: +req.params.id }
+                where: {
+                    id: +req.params.id
+                }
             });
         }, countEntities)
             .then((result) => {
@@ -48,7 +50,9 @@ class OrderItemController implements ICrudController {
     updateOne(req: Request, res: Response, next: NextFunction) {
         execTest(() => {
             return DB.orderItem.update({
-                where: { id: +req.body.id },
+                where: {
+                    id: +req.body.id
+                },
                 data: req.body
             });
         }, countEntities)
@@ -62,7 +66,11 @@ class OrderItemController implements ICrudController {
 
     deleteOneById(req: Request, res: Response, next: NextFunction) {
         execTest(async () => {
-            return DB.orderItem.delete({ where: { id: +req.params.id } });
+            return DB.orderItem.delete({
+                where: {
+                    id: +req.params.id
+                }
+            });
         }, countEntities)
             .then((result) => {
                 res.status(200).json(result);

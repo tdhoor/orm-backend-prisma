@@ -3,6 +3,7 @@ import { ICrudController } from "@core/models/controllers/crud-controller.mock";
 import { execTest } from "@core/functions/exec-test.function";
 import { DB } from "../db"
 import { countEntities } from "src/functions/count-entities.functions";
+import { Prisma } from "@prisma/client";
 
 class ProductCategoryController implements ICrudController {
     createOne(req: Request, res: Response, next: NextFunction) {
@@ -22,7 +23,9 @@ class ProductCategoryController implements ICrudController {
     getOneById(req: Request, res: Response, next: NextFunction) {
         execTest(() => {
             return DB.productCategory.findUnique({
-                where: { id: +req.params.id }
+                where: {
+                    id: +req.params.id
+                }
             });
         }, countEntities)
             .then((result) => {
@@ -47,10 +50,13 @@ class ProductCategoryController implements ICrudController {
 
     updateOne(req: Request, res: Response, next: NextFunction) {
         execTest(() => {
+            console.log(req.body);
             return DB.productCategory.update({
-                where: { id: +req.body.id },
+                where: {
+                    id: +req.body.id
+                },
                 data: req.body
-            })
+            });
         }, countEntities)
             .then((result) => {
                 res.status(200).json(result);
@@ -63,7 +69,9 @@ class ProductCategoryController implements ICrudController {
     deleteOneById(req: Request, res: Response, next: NextFunction) {
         execTest(async () => {
             return DB.productCategory.delete({
-                where: { id: +req.params.id }
+                where: {
+                    id: +req.params.id
+                }
             })
         }, countEntities)
             .then((result) => {
