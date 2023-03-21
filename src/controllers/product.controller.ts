@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import { execTest } from "@core/functions/exec-test.function";
 import { DB } from "../db"
 import { IProductController } from "@core/models/controllers/product-controller.model";
-import { countEntities } from "src/functions/count-entities.functions";
+import { countEntities } from "../functions/count-entities.functions";
 
 class ProductController implements IProductController {
     createOne(req: Request, res: Response, next: NextFunction) {

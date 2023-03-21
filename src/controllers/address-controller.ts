@@ -2,8 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import { ICrudController } from "@core/models/controllers/crud-controller.mock";
 import { execTest } from "@core/functions/exec-test.function";
 import { DB } from "../db"
-import { countEntities } from "src/functions/count-entities.functions";
-import { Address, Prisma } from "@prisma/client";
+import { countEntities } from "../functions/count-entities.functions";
 
 class AddressController implements ICrudController {
     createOne(req: Request, res: Response, next: NextFunction) {
@@ -50,7 +49,6 @@ class AddressController implements ICrudController {
 
     updateOne(req: Request, res: Response, next: NextFunction) {
         execTest(() => {
-            console.log(req.body);
             return DB.address.update({
                 where: {
                     id: +req.body.id

@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import { ICustomerController } from "@core/models/controllers/customer-controller.model";
 import { execTest } from "@core/functions/exec-test.function";
 import { DB } from "../db"
-import { countEntities } from "src/functions/count-entities.functions";
+import { countEntities } from "../functions/count-entities.functions";
 
 class CustomerController implements ICustomerController {
     createMany(req: Request, res: Response, next: NextFunction) {
@@ -23,9 +23,7 @@ class CustomerController implements ICustomerController {
         execTest(() => {
             return DB.order.findMany({
                 where: {
-                    customer: {
-                        id: +req.params.id
-                    }
+                    customerId: +req.params.id
                 },
                 include: {
                     orderItems: true
@@ -51,13 +49,12 @@ class CustomerController implements ICustomerController {
                     orderItems: {
                         some: {
                             order: {
-                                customerId: +req.params.id
+                                customer: {
+                                    id: +req.params.id
+                                }
                             }
                         }
                     }
-                },
-                include: {
-                    productCategory: true
                 },
                 orderBy: {
                     name: "asc"
@@ -127,7 +124,6 @@ class CustomerController implements ICustomerController {
 
     updateOne(req: Request, res: Response, next: NextFunction) {
         execTest(() => {
-            console.log(req.body);
             return DB.customer.update({
                 where: {
                     id: req.body.id

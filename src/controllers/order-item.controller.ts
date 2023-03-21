@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import { ICrudController } from "@core/models/controllers/crud-controller.mock";
 import { execTest } from "@core/functions/exec-test.function";
 import { DB } from "../db"
-import { countEntities } from "src/functions/count-entities.functions";
+import { countEntities } from "../functions/count-entities.functions";
 
 class OrderItemController implements ICrudController {
     createOne(req: Request, res: Response, next: NextFunction) {
