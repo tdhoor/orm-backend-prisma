@@ -15,7 +15,8 @@ class OrderItemController implements ICrudController {
                 res.status(200).json(result);
             })
             .catch((error) => {
-                res.status(500).send(error);
+                res.status(500).json({ msg: "Error creating order item" });
+                console.error(error);
             })
     }
 
@@ -31,7 +32,8 @@ class OrderItemController implements ICrudController {
                 res.status(200).json(result);
             })
             .catch((error) => {
-                res.status(500).send(error);
+                res.status(500).json({ msg: "Error getting order item" });
+                console.error(error);
             })
     }
 
@@ -43,24 +45,29 @@ class OrderItemController implements ICrudController {
                 res.status(200).json(result);
             })
             .catch((error) => {
-                res.status(500).send(error);
+                res.status(500).json({ msg: "Error getting order items" });
+                console.error(error);
             })
     }
 
     updateOne(req: Request, res: Response, next: NextFunction) {
+        const orderItem = req.body;
+        const id = orderItem.id;
+        delete orderItem.id;
         execTest(() => {
             return DB.orderItem.update({
                 where: {
-                    id: +req.body.id
+                    id
                 },
-                data: req.body
+                data: orderItem
             });
         }, countEntities)
             .then((result) => {
                 res.status(200).json(result);
             })
             .catch((error) => {
-                res.status(500).send(error);
+                res.status(500).json({ msg: "Error updating order item" });
+                console.error(error);
             })
     }
 
@@ -76,7 +83,8 @@ class OrderItemController implements ICrudController {
                 res.status(200).json(result);
             })
             .catch((error) => {
-                res.status(500).send(error);
+                res.status(500).json({ msg: "Error deleting order item" });
+                console.error(error);
             })
     }
 }

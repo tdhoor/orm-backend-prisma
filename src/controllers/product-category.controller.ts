@@ -15,7 +15,8 @@ class ProductCategoryController implements ICrudController {
                 res.status(200).json(result);
             })
             .catch((error) => {
-                res.status(500).send(error);
+                res.status(500).json({ msg: "Error creating product category", data: req.body });
+                console.error(error);
             })
     }
 
@@ -31,7 +32,8 @@ class ProductCategoryController implements ICrudController {
                 res.status(200).json(result);
             })
             .catch((error) => {
-                res.status(500).send(error);
+                res.status(500).json({ msg: "Error getting product category" });
+                console.error(error);
             })
     }
 
@@ -43,24 +45,29 @@ class ProductCategoryController implements ICrudController {
                 res.status(200).json(result);
             })
             .catch((error) => {
-                res.status(500).send(error);
+                res.status(500).json({ msg: "Error getting product categories" });
+                console.error(error);
             })
     }
 
     updateOne(req: Request, res: Response, next: NextFunction) {
+        const productCategory = req.body;
+        const id = productCategory.id;
+        delete productCategory.id;
         execTest(() => {
             return DB.productCategory.update({
                 where: {
-                    id: +req.body.id
+                    id: id
                 },
-                data: req.body
+                data: productCategory
             });
         }, countEntities)
             .then((result) => {
                 res.status(200).json(result);
             })
             .catch((error) => {
-                res.status(500).send(error);
+                res.status(500).json({ msg: "Error updating product category" });
+                console.error(error);
             })
     }
 
@@ -76,7 +83,8 @@ class ProductCategoryController implements ICrudController {
                 res.status(200).json(result);
             })
             .catch((error) => {
-                res.status(500).send(error);
+                res.status(500).json({ msg: "Error deleting product category" });
+                console.error(error);
             })
     }
 }
