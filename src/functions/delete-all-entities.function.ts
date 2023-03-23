@@ -6,7 +6,7 @@ export async function deleteAllEntities() {
     for (const tableName of tables) {
         console.log("delete: " + tableName);
         await DB.$executeRawUnsafe(`DELETE from [${tableName}];`)
-        await DB.$executeRawUnsafe(`DBCC CHECKIDENT ([${tableName}], RESEED, 0);`);
+        await DB.$executeRawUnsafe(`DBCC CHECKIDENT ([${tableName}], RESEED, 1);`);
     }
     console.log("delete all done");
 }
