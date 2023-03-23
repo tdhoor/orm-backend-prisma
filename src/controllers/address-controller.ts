@@ -15,7 +15,8 @@ class AddressController implements ICrudController {
                 res.status(200).json(result);
             })
             .catch((error) => {
-                res.status(500).send(error);
+                res.status(500).json({ msg: "Error creating addresss" });
+                console.error(error);
             })
     }
 
@@ -31,7 +32,8 @@ class AddressController implements ICrudController {
                 res.status(200).json(result);
             })
             .catch((error) => {
-                res.status(500).send(error);
+                res.status(500).json({ msg: "Error getting address" });
+                console.error(error);
             })
     }
 
@@ -43,17 +45,21 @@ class AddressController implements ICrudController {
                 res.status(200).json(result);
             })
             .catch((error) => {
-                res.status(500).send(error);
+                res.status(500).json({ msg: "Error getting addresses" });
+                console.error(error);
             })
     }
 
     updateOne(req: Request, res: Response, next: NextFunction) {
+        const address = req.body;
+        const id = address.id;
+        delete address.id;
         execTest(() => {
             return DB.address.update({
                 where: {
-                    id: +req.body.id
+                    id
                 },
-                data: req.body
+                data: address
             });
 
         }, countEntities)
@@ -61,7 +67,8 @@ class AddressController implements ICrudController {
                 res.status(200).json(result);
             })
             .catch((error) => {
-                res.status(500).send(error);
+                res.status(500).json("Error updating address")
+                console.error(error);
             })
     }
 
@@ -77,7 +84,8 @@ class AddressController implements ICrudController {
                 res.status(200).json(result);
             })
             .catch((error) => {
-                res.status(500).send(error);
+                res.status(500).json({ msg: "Error deleting address" });
+                console.error(error);
             })
     }
 }

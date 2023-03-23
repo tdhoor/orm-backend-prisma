@@ -3,6 +3,7 @@ import { ICustomerController } from "@core/models/controllers/customer-controlle
 import { execTest } from "@core/functions/exec-test.function";
 import { DB } from "../db"
 import { countEntities } from "../functions/count-entities.functions";
+import { Customer } from "@prisma/client";
 
 class CustomerController implements ICustomerController {
     createMany(req: Request, res: Response, next: NextFunction) {
@@ -15,7 +16,8 @@ class CustomerController implements ICustomerController {
                 res.status(200).json(result);
             })
             .catch((error) => {
-                res.status(500).send(error);
+                res.status(500).json({ msg: "Error creating customers" });
+                console.error(error);
             })
     }
 
@@ -38,7 +40,8 @@ class CustomerController implements ICustomerController {
                 res.status(200).json(result);
             })
             .catch((error) => {
-                res.status(500).send(error);
+                res.status(500).json({ msg: "Error getting customer orders" });
+                console.error(error);
             })
     }
 
@@ -66,7 +69,8 @@ class CustomerController implements ICustomerController {
                 res.status(200).json(result);
             })
             .catch((error) => {
-                res.status(500).send(error);
+                res.status(500).json({ msg: "Error getting customer products" });
+                console.error(error);
             })
     }
 
@@ -85,7 +89,8 @@ class CustomerController implements ICustomerController {
                 res.status(200).json(result);
             })
             .catch((error) => {
-                res.status(500).json({ error, body: req.body });
+                res.status(500).json({ msg: "Error creating customers" });
+                console.error(error);
             })
     }
 
@@ -104,7 +109,8 @@ class CustomerController implements ICustomerController {
                 res.status(200).json(result);
             })
             .catch((error) => {
-                res.status(500).send(error);
+                res.status(500).json({ msg: "Error getting customer" });
+                console.error(error);
             })
     }
 
@@ -118,24 +124,29 @@ class CustomerController implements ICustomerController {
                 res.status(200).json(result);
             })
             .catch((error) => {
-                res.status(500).send(error);
+                res.status(500).json({ msg: "Error getting customers" });
+                console.error(error);
             })
     }
 
     updateOne(req: Request, res: Response, next: NextFunction) {
+        const customer = req.body;
+        const id = customer.id;
+        delete customer.id;
         execTest(() => {
             return DB.customer.update({
                 where: {
-                    id: req.body.id
+                    id
                 },
-                data: req.body
+                data: customer
             });
         }, countEntities)
             .then((result) => {
                 res.status(200).json(result);
             })
             .catch((error) => {
-                res.status(500).send(error);
+                res.status(500).json({ msg: "Error updating customer" });
+                console.error(error);
             })
     }
 
@@ -151,7 +162,8 @@ class CustomerController implements ICustomerController {
                 res.status(200).json(result);
             })
             .catch((error) => {
-                res.status(500).json({ massage: "Error deleting customer!", data: { id: req.params.id } });
+                res.status(500).json({ msg: "Error deleting customer" });
+                console.error(error);
             })
     }
 
