@@ -15,7 +15,8 @@ class ProductController implements IProductController {
                 res.status(200).json(result);
             })
             .catch((error) => {
-                res.status(500).send(error);
+                res.status(500).json({ msg: "Error creating product" });
+                console.error(error);
             })
     }
 
@@ -31,7 +32,8 @@ class ProductController implements IProductController {
                 res.status(200).json(result);
             })
             .catch((error) => {
-                res.status(500).send(error);
+                res.status(500).json({ msg: "Error getting product" });
+                console.error(error);
             })
     }
 
@@ -48,24 +50,29 @@ class ProductController implements IProductController {
                 res.status(200).json(result);
             })
             .catch((error) => {
-                res.status(500).send(error);
+                res.status(500).json({ msg: "Error getting products" });
+                console.error(error);
             })
     }
 
     updateOne(req: Request, res: Response, next: NextFunction) {
+        const product = req.body;
+        const id = product.id;
+        delete product.id;
         execTest(() => {
             return DB.product.update({
                 where: {
-                    id: +req.body.id
+                    id
                 },
-                data: req.body
+                data: product
             });
         }, countEntities)
             .then((result) => {
                 res.status(200).json(result);
             })
             .catch((error) => {
-                res.status(500).send(error);
+                res.status(500).json({ msg: "Error updating product" });
+                console.error(error);
             })
     }
 
@@ -81,7 +88,8 @@ class ProductController implements IProductController {
                 res.status(200).json(result);
             })
             .catch((error) => {
-                res.status(500).send(error);
+                res.status(500).json({ msg: "Error deleting product" });
+                console.error(error);
             })
     }
 
@@ -103,7 +111,8 @@ class ProductController implements IProductController {
                 res.status(200).json(result);
             })
             .catch((error) => {
-                res.status(500).send(error);
+                res.status(500).json({ msg: "Error getting product from category" });
+                console.error(error);
             })
     }
 }
