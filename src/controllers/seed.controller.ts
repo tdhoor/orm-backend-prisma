@@ -14,33 +14,37 @@ async function seedDb(req, res, next) {
         let customers = createMock.customers(amount);
         let addresses = createMock.addresses(amount, customers);
 
-        await DB.customer.createMany({ data: customers });
-        customers = null;
+        while (customers.length > 0) {
+            await DB.customer.createMany({ data: customers.splice(0, 10000) });
+        }
 
-        await DB.address.createMany({ data: addresses });
-        addresses = null;
+        while (addresses.length > 0) {
+            await DB.address.createMany({ data: addresses.splice(0, 10000) });
+        }
 
         let categories = createMock.productCategories(calcProductCategoryAmount(amount));
         let products = createMock.products(amount, categories);
         let customerIds = Array.from({ length: amount }).map((_, i) => i + 1);
         let { orders, orderItems } = createMock.orders(amount, customerIds, products, { addOrderIdToOrderItem: true, seperateOrderItems: true });
 
-        await DB.productCategory.createMany({ data: categories });
-        categories = null;
+        while (categories.length > 0) {
+            await DB.productCategory.createMany({ data: categories.splice(0, 10000) });
+        }
 
-        await DB.product.createMany({ data: products });
-        products = null;
+        while (products.length > 0) {
+            await DB.product.createMany({ data: products.splice(0, 10000) });
+        }
 
-        await DB.order.createMany({ data: orders });
-        orders = null;
-        customerIds = null;
+        while (orders.length > 0) {
+            await DB.order.createMany({ data: orders.splice(0, 10000) });
+        }
 
-        await DB.orderItem.createMany({ data: orderItems });
-        orderItems = null;
+        while (orderItems.length > 0) {
+            await DB.orderItem.createMany({ data: orderItems.splice(0, 10000) });
+        }
 
         console.log(performance.now() - p1);
         const count = await countEntities();
-
         res.status(200).json({ message: "DB seeded", count });
     } catch (e) {
         console.log(e);

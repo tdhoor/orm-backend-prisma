@@ -6,7 +6,7 @@
   "scripts": {
     "start": "ts-node src/index.ts",
     "build": "tsc && tsc-alias",
-    "prod": "sleep 5 && prisma migrate deploy && node build/src/index.js",
+    "prod": "sleep 5 && prisma migrate deploy && node --max_old_space_size=8192 build/src/index.js",
     "generate": "prisma generate --schema=./prisma/schema.prisma"
   },
   "repository": {
