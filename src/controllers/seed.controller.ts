@@ -11,32 +11,64 @@ async function seedDb(req, res, next) {
 
         await deleteAllEntities();
 
+        console.log('====================================');
+        console.log("All entities deleted");
+        console.log('====================================');
         let customers = createMock.customers(amount);
+
+        console.log('====================================');
+        console.log("Customers created1");
+        console.log('====================================');
         let addresses = createMock.addresses(amount, customers);
 
-        await DB.customer.createMany({ data: customers });
-        customers = null;
 
-        await DB.address.createMany({ data: addresses });
-        addresses = null;
+        console.log('====================================');
+        console.log("Addresses created1");
+        console.log('====================================');
+        while (customers.length > 0) {
+            await DB.customer.createMany({ data: customers.splice(0, 50000) });
+        }
+        console.log('====================================');
+        console.log("Customers created");
+        console.log('====================================');
 
+        while (addresses.length > 0) {
+            await DB.address.createMany({ data: addresses.splice(0, 50000) });
+        }
+        console.log('====================================');
+        console.log("Addresses created");
+        console.log('====================================');
         let categories = createMock.productCategories(calcProductCategoryAmount(amount));
         let products = createMock.products(amount, categories);
         let customerIds = Array.from({ length: amount }).map((_, i) => i + 1);
         let { orders, orderItems } = createMock.orders(amount, customerIds, products, { addOrderIdToOrderItem: true, seperateOrderItems: true });
 
-        await DB.productCategory.createMany({ data: categories });
-        categories = null;
+        while (categories.length > 0) {
+            await DB.productCategory.createMany({ data: categories.splice(0, 50000) });
+        }
+        console.log('====================================');
+        console.log("Categories created");
+        console.log('====================================');
+        while (products.length > 0) {
+            await DB.product.createMany({ data: products.splice(0, 50000) });
+        }
+        console.log('====================================');
+        console.log("Products created");
+        console.log('====================================');
 
-        await DB.product.createMany({ data: products });
-        products = null;
+        while (orders.length > 0) {
+            await DB.order.createMany({ data: orders.splice(0, 50000) });
+        }
+        console.log('====================================');
+        console.log("Orders created");
+        console.log('====================================');
 
-        await DB.order.createMany({ data: orders });
-        orders = null;
-        customerIds = null;
-
-        await DB.orderItem.createMany({ data: orderItems });
-        orderItems = null;
+        while (orderItems.length > 0) {
+            await DB.orderItem.createMany({ data: orderItems.splice(0, 50000) });
+        }
+        console.log('====================================');
+        console.log("OrderItems created");
+        console.log('====================================');
 
         console.log(performance.now() - p1);
         const count = await countEntities();
