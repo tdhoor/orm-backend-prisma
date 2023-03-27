@@ -147,7 +147,10 @@ class CustomerController implements ICustomerController {
                 where: {
                     id
                 },
-                data: customer
+                data: customer,
+                include: {
+                    address: true
+                }
             });
         }, countEntities)
             .then((result) => {
@@ -164,6 +167,9 @@ class CustomerController implements ICustomerController {
             return DB.customer.delete({
                 where: {
                     id: +req.params.id
+                },
+                include: {
+                    address: true
                 }
             });
         }, countEntities)
