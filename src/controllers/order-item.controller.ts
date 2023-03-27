@@ -7,7 +7,7 @@ import { countEntities } from "../functions/count-entities.functions";
 class OrderItemController implements ICrudController {
     createOne(req: Request, res: Response, next: NextFunction) {
         execTest(() => {
-            return DB.orderItem.createMany({
+            return DB.orderItem.create({
                 data: req.body
             });
         }, countEntities)
