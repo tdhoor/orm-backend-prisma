@@ -2,6 +2,7 @@ version: '3'
 services:
   app:
     container_name: prisma.app.postgres
+    image: "prisma_postgres"
     build: .
     restart: always 
     ports: 
@@ -9,6 +10,8 @@ services:
     env_file: .env
     depends_on: 
       - prismadbpostgres
+    volumes:
+      - prisma-app-postgres:/var/lib/prisma/app/postgres
 
   prismadbpostgres:
     container_name: prisma.db.postgres
@@ -25,3 +28,4 @@ services:
       - ./libs/core/src/db/postgres/testdb.sql:/docker-entrypoint-initdb.d/setup-postgres.sql
 volumes:
   prisma-db-postgres:
+  prisma-app-postgres:
