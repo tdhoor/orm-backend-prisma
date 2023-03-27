@@ -24,6 +24,8 @@ services:
     environment:
       MYSQL_DATABASE: "testdb"
       MYSQL_ROOT_PASSWORD: "root"
+    logging:
+      driver: none
     volumes:
       - prisma-db-mysql:/var/lib/prisma/db/mysql
 
