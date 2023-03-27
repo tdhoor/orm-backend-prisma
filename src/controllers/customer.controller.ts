@@ -82,6 +82,9 @@ class CustomerController implements ICustomerController {
                     address: {
                         create: req.body.address
                     }
+                },
+                include: {
+                    address: true
                 }
             });
         }, countEntities)
@@ -117,6 +120,9 @@ class CustomerController implements ICustomerController {
     getAll(req: Request, res: Response, next: NextFunction) {
         execTest(() => {
             return DB.customer.findMany({
+                include: {
+                    address: true
+                },
                 take: 100
             });
         }, countEntities)
@@ -133,10 +139,16 @@ class CustomerController implements ICustomerController {
         const customer = req.body;
         const id = customer.id;
         delete customer.id;
+        if (!customer.address) {
+            delete customer.address;
+        }
         execTest(() => {
             return DB.customer.update({
                 where: {
                     id
+                },
+                include: {
+                    address: true
                 },
                 data: customer
             });
@@ -155,6 +167,9 @@ class CustomerController implements ICustomerController {
             return DB.customer.delete({
                 where: {
                     id: +req.params.id
+                },
+                include: {
+                    address: true
                 }
             });
         }, countEntities)
