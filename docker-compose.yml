@@ -2,6 +2,7 @@ version: '3'
 services:
   app:
     container_name: prisma.app.mssql
+    image: "prisma_mssql"
     build: .
     restart: always 
     ports: 
@@ -9,6 +10,8 @@ services:
     env_file: .env
     depends_on: 
       - prismadbmssql
+    volumes:
+      - prisma-app-mssql:/var/lib/prisma/app/mssql
 
   prismadbmssql:
     container_name: prisma.db.mssql
@@ -22,10 +25,11 @@ services:
       MSSQL_PID: Express
       ACCEPT_EULA: "Y"
     volumes:
-      - prisma-db-mssql:/var/lib/prisma/mssql
+      - prisma-db-mssql:/var/lib/prisma/db/mssql
       - ./libs/core/src/db/mssql/docker-entrypoint.sh:/entrypoint.sh
       - ./libs/core/src/db/mssql/docker-db-init.sh:/db-init.sh
       - ./libs/core/src/db/mssql/testdb.sql:/db-init.sql
 
 volumes:
   prisma-db-mssql:
+  prisma-app-mssql:
