@@ -24,6 +24,8 @@ services:
       SA_PASSWORD: "a1?%fkARF!24x"
       MSSQL_PID: Express
       ACCEPT_EULA: "Y"
+    logging:
+      driver: none
     volumes:
       - prisma-db-mssql:/var/lib/prisma/db/mssql
       - ./libs/core/src/db/mssql/docker-entrypoint.sh:/entrypoint.sh
