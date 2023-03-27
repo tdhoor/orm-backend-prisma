@@ -2,6 +2,7 @@ version: '3'
 services:
   app:
     container_name: prisma.app.mysql
+    image: "prisma_mysql"
     build: .
     restart: always 
     ports: 
@@ -9,6 +10,8 @@ services:
     env_file: .env
     depends_on: 
       - prismadbmysql
+    volumes:
+      - prisma-app-mysql:/var/lib/prisma/app/mysql
 
   prismadbmysql:
     container_name: prisma.db.mysql
@@ -22,7 +25,8 @@ services:
       MYSQL_DATABASE: "testdb"
       MYSQL_ROOT_PASSWORD: "root"
     volumes:
-      - prisma-db-mysql:/var/lib/prisma/mysql
+      - prisma-db-mysql:/var/lib/prisma/db/mysql
 
 volumes:
   prisma-db-mysql:
+  prisma-app-mysql:
