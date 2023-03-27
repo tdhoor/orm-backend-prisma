@@ -7,8 +7,6 @@ import { calcProductCategoryAmount } from "@core/functions/calc-product-category
 async function seedDb(req, res, next) {
     try {
         const amount: number = +req.params.amount;
-        let p1 = performance.now();
-
         await deleteAllEntities();
 
         let customers = createMock.customers(amount);
@@ -42,8 +40,6 @@ async function seedDb(req, res, next) {
         while (orderItems.length > 0) {
             await DB.orderItem.createMany({ data: orderItems.splice(0, 10000) });
         }
-
-        console.log(performance.now() - p1);
         const count = await countEntities();
         res.status(200).json({ message: "DB seeded", count });
     } catch (e) {
