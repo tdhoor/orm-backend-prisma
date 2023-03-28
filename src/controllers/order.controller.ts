@@ -78,10 +78,7 @@ class OrderController implements ICrudController {
                 where: {
                     id
                 },
-                data: order,
-                include: {
-                    orderItems: true
-                }
+                data: order
             });
         }, countEntities)
             .then((result) => {
@@ -95,14 +92,13 @@ class OrderController implements ICrudController {
 
     deleteOneById(req: Request, res: Response, next: NextFunction) {
         execTest(async () => {
-            return DB.order.delete({
+            const id = +req.params.id;
+            await DB.order.delete({
                 where: {
-                    id: +req.params.id
-                },
-                include: {
-                    orderItems: true
+                    id
                 }
-            })
+            });
+            return id;
         }, countEntities)
             .then((result) => {
                 res.status(200).json(result);

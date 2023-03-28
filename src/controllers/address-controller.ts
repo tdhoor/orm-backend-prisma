@@ -73,12 +73,14 @@ class AddressController implements ICrudController {
     }
 
     deleteOneById(req: Request, res: Response, next: NextFunction) {
-        execTest(() => {
-            return DB.address.delete({
+        execTest(async () => {
+            const id = +req.params.id;
+            await DB.address.delete({
                 where: {
-                    id: +req.params.id
+                    id
                 }
             });
+            return id;
         }, countEntities)
             .then((result) => {
                 res.status(200).json(result);
