@@ -2,7 +2,6 @@ import { Request, Response, NextFunction } from "express";
 import { ICrudController } from "@core/models/controllers/crud-controller.mock";
 import { execTest } from "@core/functions/exec-test.function";
 import { DB } from "../db"
-import { countEntities } from "../functions/count-entities.functions";
 
 class OrderController implements ICrudController {
     createOne(req: Request, res: Response, next: NextFunction) {
@@ -18,7 +17,7 @@ class OrderController implements ICrudController {
                     orderItems: true
                 }
             });
-        }, countEntities)
+        })
             .then((result) => {
                 res.status(200).json(result);
             })
@@ -38,7 +37,7 @@ class OrderController implements ICrudController {
                     orderItems: true
                 }
             })
-        }, countEntities)
+        })
             .then((result) => {
                 res.status(200).json(result);
             })
@@ -59,7 +58,7 @@ class OrderController implements ICrudController {
                 },
                 take: 100
             });
-        }, countEntities)
+        })
             .then((result) => {
                 res.status(200).json(result);
             })
@@ -78,7 +77,7 @@ class OrderController implements ICrudController {
                 },
                 data: order
             });
-        }, countEntities)
+        })
             .then((result) => {
                 res.status(200).json(result);
             })
@@ -97,7 +96,7 @@ class OrderController implements ICrudController {
                 }
             });
             return id;
-        }, countEntities)
+        })
             .then((result) => {
                 res.status(200).json(result);
             })
