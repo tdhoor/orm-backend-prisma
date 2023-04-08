@@ -51,9 +51,7 @@ class AddressController implements ICrudController {
     }
 
     updateOne(req: Request, res: Response, next: NextFunction) {
-        const address = req.body;
-        const id = address.id;
-        delete address.id;
+        const { id, ...address } = req.body;
         execTest(() => {
             return DB.address.update({
                 where: {

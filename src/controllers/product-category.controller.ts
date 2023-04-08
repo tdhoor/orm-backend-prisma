@@ -51,9 +51,7 @@ class ProductCategoryController implements ICrudController {
     }
 
     updateOne(req: Request, res: Response, next: NextFunction) {
-        const productCategory = req.body;
-        const id = productCategory.id;
-        delete productCategory.id;
+        const { id, ...productCategory } = req.body;
         execTest(() => {
             return DB.productCategory.update({
                 where: {
