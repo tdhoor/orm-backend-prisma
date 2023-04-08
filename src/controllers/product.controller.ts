@@ -56,9 +56,7 @@ class ProductController implements IProductController {
     }
 
     updateOne(req: Request, res: Response, next: NextFunction) {
-        const product = req.body;
-        const id = product.id;
-        delete product.id;
+        const { id, ...product } = req.body;
         execTest(() => {
             return DB.product.update({
                 where: {
