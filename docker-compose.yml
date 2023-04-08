@@ -2,7 +2,6 @@ version: '3'
 services:
   app:
     container_name: prisma.app.mysql
-    image: "prisma_mysql"
     build: .
     restart: always 
     ports: 
