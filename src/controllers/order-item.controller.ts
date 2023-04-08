@@ -51,9 +51,7 @@ class OrderItemController implements ICrudController {
     }
 
     updateOne(req: Request, res: Response, next: NextFunction) {
-        const orderItem = req.body;
-        const id = orderItem.id;
-        delete orderItem.id;
+        const { id, ...orderItem } = req.body;
         execTest(() => {
             return DB.orderItem.update({
                 where: {

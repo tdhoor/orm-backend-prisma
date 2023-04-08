@@ -136,9 +136,7 @@ class CustomerController implements ICustomerController {
     }
 
     updateOne(req: Request, res: Response, next: NextFunction) {
-        const customer = req.body;
-        const id = customer.id;
-        delete customer.id;
+        const { id, ...customer } = req.body;
         if (!customer.address) {
             delete customer.address;
         }
