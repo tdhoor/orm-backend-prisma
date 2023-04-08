@@ -24,11 +24,13 @@ app.use("/api/order-item", orderItemRouter);
 app.use("/api/product-category", productCategoryRouter);
 app.use("/api/product", productRouter);
 
-DB.$connect().then(() => {
-    console.log("DB connected");
-    app.listen(process.env.APP_PORT, () => {
-        console.log("Server listen to port: " + process.env.APP_PORT);
-    });
-}).catch(error => {
-    console.log(error);
-})
+setTimeout(() => {
+    DB.$connect().then(() => {
+        console.log("DB connected");
+        app.listen(process.env.APP_PORT, () => {
+            console.log("Server listen to port: " + process.env.APP_PORT);
+        });
+    }).catch(error => {
+        console.log(error);
+    })
+}, 30000);
