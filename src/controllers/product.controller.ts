@@ -2,7 +2,6 @@ import { Request, Response, NextFunction } from "express";
 import { execTest } from "@core/functions/exec-test.function";
 import { DB } from "../db"
 import { IProductController } from "@core/models/controllers/product-controller.model";
-import { countEntities } from "../functions/count-entities.functions";
 
 class ProductController implements IProductController {
     createOne(req: Request, res: Response, next: NextFunction) {
@@ -10,7 +9,7 @@ class ProductController implements IProductController {
             return DB.product.create({
                 data: req.body
             });
-        }, countEntities)
+        })
             .then((result) => {
                 res.status(200).json(result);
             })
@@ -27,7 +26,7 @@ class ProductController implements IProductController {
                     id: +req.params.id
                 }
             })
-        }, countEntities)
+        })
             .then((result) => {
                 res.status(200).json(result);
             })
@@ -45,7 +44,7 @@ class ProductController implements IProductController {
                 },
                 take: 100
             });
-        }, countEntities)
+        })
             .then((result) => {
                 res.status(200).json(result);
             })
@@ -64,7 +63,7 @@ class ProductController implements IProductController {
                 },
                 data: product
             });
-        }, countEntities)
+        })
             .then((result) => {
                 res.status(200).json(result);
             })
@@ -83,7 +82,7 @@ class ProductController implements IProductController {
                 }
             });
             return id;
-        }, countEntities)
+        })
             .then((result) => {
                 res.status(200).json(result);
             })
@@ -106,7 +105,7 @@ class ProductController implements IProductController {
                 },
                 take: 100
             })
-        }, countEntities)
+        })
             .then((result) => {
                 res.status(200).json(result);
             })
