@@ -2,8 +2,6 @@ import { Request, Response, NextFunction } from "express";
 import { ICustomerController } from "@core/models/controllers/customer-controller.model";
 import { execTest } from "@core/functions/exec-test.function";
 import { DB } from "../db"
-import { countEntities } from "../functions/count-entities.functions";
-import { Customer } from "@prisma/client";
 
 class CustomerController implements ICustomerController {
     createMany(req: Request, res: Response, next: NextFunction) {
@@ -11,7 +9,7 @@ class CustomerController implements ICustomerController {
             return DB.customer.createMany({
                 data: req.body
             });
-        }, countEntities)
+        })
             .then((result) => {
                 res.status(200).json(result);
             })
@@ -35,7 +33,7 @@ class CustomerController implements ICustomerController {
                 },
                 take: 100
             });
-        }, countEntities)
+        })
             .then((result) => {
                 res.status(200).json(result);
             })
@@ -64,7 +62,7 @@ class CustomerController implements ICustomerController {
                 },
                 take: 100
             });
-        }, countEntities)
+        })
             .then((result) => {
                 res.status(200).json(result);
             })
@@ -87,7 +85,7 @@ class CustomerController implements ICustomerController {
                     address: true
                 }
             });
-        }, countEntities)
+        })
             .then((result) => {
                 res.status(200).json(result);
             })
@@ -107,7 +105,7 @@ class CustomerController implements ICustomerController {
                     address: true
                 }
             });
-        }, countEntities)
+        })
             .then((result) => {
                 res.status(200).json(result);
             })
@@ -125,7 +123,7 @@ class CustomerController implements ICustomerController {
                 },
                 take: 100
             });
-        }, countEntities)
+        })
             .then((result) => {
                 res.status(200).json(result);
             })
@@ -147,7 +145,7 @@ class CustomerController implements ICustomerController {
                 },
                 data: customer
             });
-        }, countEntities)
+        })
             .then((result) => {
                 res.status(200).json(result);
             })
@@ -166,7 +164,7 @@ class CustomerController implements ICustomerController {
                 }
             });
             return id;
-        }, countEntities)
+        })
             .then((result) => {
                 res.status(200).json(result);
             })
