@@ -1,8 +1,9 @@
 import { createMock } from "@core/functions/create-entity-mock.function";
-import { DB } from "../db";
 import { deleteAllEntities } from "../functions/delete-all-entities.function";
 import { countEntities } from "../functions/count-entities.functions";
 import { calcProductCategoryAmount } from "@core/functions/calc-product-category-amount.function";
+import { insert } from "src/functions/insert.function";
+import { Prisma } from ".prisma/client";
 
 async function seedDb(req, res, next) {
     try {
@@ -13,11 +14,10 @@ async function seedDb(req, res, next) {
         let addresses = createMock.addresses(amount, customers);
 
         while (customers.length > 0) {
-            await DB.customer.createMany({ data: customers.splice(0, 10000) });
+            await insert(Prisma.ModelName.Customer, customers.splice(0, 10000));
         }
-
         while (addresses.length > 0) {
-            await DB.address.createMany({ data: addresses.splice(0, 10000) });
+            await insert(Prisma.ModelName.Address, addresses.splice(0, 10000));
         }
 
         let categories = createMock.productCategories(calcProductCategoryAmount(amount));
@@ -26,19 +26,19 @@ async function seedDb(req, res, next) {
         let { orders, orderItems } = createMock.orders(amount, customerIds, products, { addOrderIdToOrderItem: true, seperateOrderItems: true });
 
         while (categories.length > 0) {
-            await DB.productCategory.createMany({ data: categories.splice(0, 10000) });
+            await insert(Prisma.ModelName.ProductCategory, categories.splice(0, 10000));
         }
 
         while (products.length > 0) {
-            await DB.product.createMany({ data: products.splice(0, 10000) });
+            await insert(Prisma.ModelName.Product, products.splice(0, 10000));
         }
 
         while (orders.length > 0) {
-            await DB.order.createMany({ data: orders.splice(0, 10000) });
+            await insert(Prisma.ModelName.Order, orders.splice(0, 10000));
         }
 
         while (orderItems.length > 0) {
-            await DB.orderItem.createMany({ data: orderItems.splice(0, 10000) });
+            await insert(Prisma.ModelName.OrderItem, orderItems.splice(0, 10000));
         }
         const count = await countEntities();
         res.status(200).json({ message: "DB seeded", count });
