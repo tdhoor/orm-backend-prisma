@@ -2,7 +2,7 @@ import { createMock } from "@core/functions/create-entity-mock.function";
 import { deleteAllEntities } from "../functions/delete-all-entities.function";
 import { countEntities } from "../functions/count-entities.functions";
 import { calcProductCategoryAmount } from "@core/functions/calc-product-category-amount.function";
-import { insert } from "src/functions/insert.function";
+import { insert } from "../functions/insert.function";
 import { Prisma } from ".prisma/client";
 
 async function seedDb(req, res, next) {

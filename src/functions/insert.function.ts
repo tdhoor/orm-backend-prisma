@@ -1,5 +1,6 @@
-import { bukdInsertMssql } from "@core/functions/bulk-insert-mssql.function";
+import { bulkInsertMssql } from "@core/functions/bulk-insert-mssql.function";
+import sql from "mssql";
 
 export function insert(table, values: any[]) {
-    return bukdInsertMssql(table, values);
+    return bulkInsertMssql(sql, table, values);
 }
