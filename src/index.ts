@@ -14,6 +14,7 @@ dotenv.config();
 const express = require("express");
 
 const app = express();
+app.setTimeout(900000); // 15 minutes
 app.use(express.json({ limit: "100mb" }));
 
 app.use("/api/seed", seedRouter);
@@ -27,10 +28,9 @@ app.use("/api/product", productRouter);
 setTimeout(() => {
     DB.$connect().then(() => {
         console.log("DB connected");
-        const server = app.listen(process.env.APP_PORT, () => {
+        app.listen(process.env.APP_PORT, () => {
             console.log("Server listen to port: " + process.env.APP_PORT);
         });
-        server.setTimeout(900000); // 15 minutes
     }).catch(error => {
         console.log(error);
     })
