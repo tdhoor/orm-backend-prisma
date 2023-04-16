@@ -14,6 +14,7 @@ dotenv.config();
 const express = require("express");
 
 const app = express();
+app.setTimeout(900000); // 15 minutes
 app.use(express.json({ limit: "100mb" }));
 
 app.use("/api/seed", seedRouter);
