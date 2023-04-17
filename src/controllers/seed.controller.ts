@@ -59,7 +59,18 @@ async function resetDb(req, res, next) {
     }
 }
 
+async function countAll(req, res, next) {
+    try {
+        const count = await countEntities();
+        res.status(200).json({ message: "Counted", count });
+    } catch (e) {
+        console.log(e);
+        res.status(500).json({ message: "Error counting" });
+    }
+}
+
 export default {
     seedDb,
-    resetDb
+    resetDb,
+    countAll
 }
